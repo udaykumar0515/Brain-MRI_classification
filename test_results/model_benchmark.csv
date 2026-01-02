@@ -1,0 +1,6 @@
+Model,Loss,Accuracy,F1 Score,AUC,Parameters (M),GFLOPs,Inference Time (ms/img)
+ResNet50,0.0563,0.9947,0.9946,0.9999,23.52,4.13,2.2
+DenseNet121,0.0564,0.9939,0.9934,0.9999,6.96,2.83,3.87
+EfficientNetB0,0.0446,0.9962,0.9959,1.0,4.01,0.38,3.15
+ConvNeXtTiny,0.0474,0.9977,0.9975,1.0,27.82,4.45,1.72
+ViTSmall16,0.0838,0.9825,0.9815,0.9993,21.67,4.24,1.67

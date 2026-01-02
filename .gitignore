@@ -2,3 +2,7 @@ docs/
 datasets/
 venv/
 __pycache__/
+kaggle.json
+models/
+venv_brain_py312/
+dataset/
