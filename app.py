@@ -25,31 +25,31 @@ MODELS_CONFIG = {
         "id": "convnext_tiny",
         "path": "models/ConvNeXtTiny_runD_best.pth",
         "history": "metrics/ConvNeXtTiny_runD_history.csv",
-        "cm_path": "test_results/ConvNeXtTiny_runD_predictions.png"
+        "cm_path": "test_results/ConvNeXtTiny_runD_cm.png"
     },
     "DenseNet121": {
         "id": "densenet121",
         "path": "models/DenseNet121_runB_best.pth",
         "history": "metrics/DenseNet121_runB_history.csv",
-        "cm_path": "test_results/DenseNet121_runB_predictions.png"
+        "cm_path": "test_results/DenseNet121_runB_cm.png"
     },
     "EfficientNet-B0": {
         "id": "efficientnet_b0",
         "path": "models/EfficientNetB0_runC_best.pth",
         "history": "metrics/EfficientNetB0_runC_history.csv",
-        "cm_path": "test_results/EfficientNetB0_runC_predictions.png"
+        "cm_path": "test_results/EfficientNetB0_runC_cm.png"
     },
     "ResNet50": {
         "id": "resnet50",
         "path": "models/ResNet50_runA_best.pth",
         "history": "metrics/ResNet50_runA_history.csv",
-        "cm_path": "test_results/ResNet50_runA_predictions.png"
+        "cm_path": "test_results/ResNet50_runA_cm.png"
     },
     "ViT-Small": {
         "id": "vit_small_patch16_224",
         "path": "models/ViTSmall16_runE_best.pth",
         "history": "metrics/ViTSmall16_runE_history.csv",
-        "cm_path": "test_results/ViTSmall16_runE_predictions.png"
+        "cm_path": "test_results/ViTSmall16_runE_cm.png"
     }
 }
 
