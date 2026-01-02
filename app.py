@@ -180,9 +180,10 @@ elif page == "📊 Models Overview":
     else:
         # Leaderboard
         st.subheader("🏆 Model Leaderboard")
+        df.index = df.index + 1
         st.dataframe(
-            df.style.highlight_max(axis=0, subset=['Accuracy', 'F1 Score', 'AUC'], color='#d4edda')
-              .highlight_min(axis=0, subset=['Parameters (M)', 'GFLOPs', 'Inference Time (ms/img)'], color='#d4edda'),
+            df.style.highlight_max(axis=0, subset=['Accuracy', 'F1 Score', 'AUC'], props='color:black;background-color:#d4edda;')
+              .highlight_min(axis=0, subset=['Parameters (M)', 'GFLOPs', 'Inference Time (ms/img)'], props='color:black;background-color:#d4edda;'),
             use_container_width=True
         )
 
