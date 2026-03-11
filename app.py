@@ -135,34 +135,48 @@ if page == "🏠 Inference":
         input_tensor = preprocess_image(image).to(device)
         
         with col_results:
-            st.subheader("Live Predictions")
+            st.subheader("Final Diagnosis")
             
             # Run Inference Loop
             results = []
+            predictions_list = []
             with torch.no_grad():
                 for name, model in models.items():
                     outputs = model(input_tensor)
                     probs = torch.nn.functional.softmax(outputs, dim=1)
                     conf, pred_cls = torch.max(probs, 1)
+                    pred_label = CLASS_NAMES[pred_cls.item()]
+                    predictions_list.append(pred_label)
                     results.append({
                         "Model": name,
-                        "Prediction": CLASS_NAMES[pred_cls.item()],
+                        "Prediction": pred_label,
                         "Confidence": conf.item()
                     })
             
-            # Display Cards
-            cols = st.columns(3)
-            for i, res in enumerate(results):
-                with cols[i % 3]:
-                    st.metric(
-                        label=res["Model"],
-                        value=res["Prediction"],
-                        delta=f"{res['Confidence']:.1%}"
-                    )
+            # Majority Voting
+            from collections import Counter
+            vote_counts = Counter(predictions_list)
+            final_prediction = vote_counts.most_common(1)[0][0]
+            vote_percentage = (vote_counts[final_prediction] / len(predictions_list)) * 100
+            
+            # Display Final Answer
+            st.markdown("---")
+            col1, col2 = st.columns([2, 1])
+            with col1:
+                st.metric(
+                    label="Consensus Diagnosis",
+                    value=final_prediction,
+                    delta=f"{vote_percentage:.0f}% agreement"
+                )
+            with col2:
+                st.metric(
+                    label="Models Voting",
+                    value=f"{int(vote_counts[final_prediction])}/5"
+                )
         
-        # Comparison Chart
+        # Comparison Chart - Show individual model predictions
         st.markdown("---")
-        st.subheader("Confidence Comparison")
+        st.subheader("Individual Model Predictions (for reference)")
         res_df = pd.DataFrame(results)
         fig = px.bar(res_df, x='Model', y='Confidence', color='Prediction', 
                      text_auto='.1%', title="Model Confidence Scores", range_y=[0,1])
