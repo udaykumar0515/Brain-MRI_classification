@@ -125,41 +125,39 @@ if page == "🏠 Inference":
     uploaded_file = st.file_uploader("Upload MRI Image", type=["jpg", "jpeg", "png"])
 
     if uploaded_file:
-        col_img, col_results = st.columns([1, 2])
-        
         image = Image.open(uploaded_file).convert('RGB')
+        input_tensor = preprocess_image(image).to(device)
+        
+        # Run Inference Loop
+        results = []
+        predictions_list = []
+        with torch.no_grad():
+            for name, model in models.items():
+                outputs = model(input_tensor)
+                probs = torch.nn.functional.softmax(outputs, dim=1)
+                conf, pred_cls = torch.max(probs, 1)
+                pred_label = CLASS_NAMES[pred_cls.item()]
+                predictions_list.append(pred_label)
+                results.append({
+                    "Model": name,
+                    "Prediction": pred_label,
+                    "Confidence": conf.item()
+                })
+        
+        # Majority Voting
+        from collections import Counter
+        vote_counts = Counter(predictions_list)
+        final_prediction = vote_counts.most_common(1)[0][0]
+        vote_percentage = (vote_counts[final_prediction] / len(predictions_list)) * 100
+        
+        # Image and Final Diagnosis Side by Side
+        col_img, col_results = st.columns([1, 1])
         
         with col_img:
-            st.image(image, caption='Uploaded Scan', use_container_width=True)
-        
-        input_tensor = preprocess_image(image).to(device)
+            st.image(image, caption='Uploaded Scan', width=400)
         
         with col_results:
             st.subheader("Final Diagnosis")
-            
-            # Run Inference Loop
-            results = []
-            predictions_list = []
-            with torch.no_grad():
-                for name, model in models.items():
-                    outputs = model(input_tensor)
-                    probs = torch.nn.functional.softmax(outputs, dim=1)
-                    conf, pred_cls = torch.max(probs, 1)
-                    pred_label = CLASS_NAMES[pred_cls.item()]
-                    predictions_list.append(pred_label)
-                    results.append({
-                        "Model": name,
-                        "Prediction": pred_label,
-                        "Confidence": conf.item()
-                    })
-            
-            # Majority Voting
-            from collections import Counter
-            vote_counts = Counter(predictions_list)
-            final_prediction = vote_counts.most_common(1)[0][0]
-            vote_percentage = (vote_counts[final_prediction] / len(predictions_list)) * 100
-            
-            # Display Final Answer
             st.markdown("---")
             col1, col2 = st.columns([2, 1])
             with col1:
@@ -174,9 +172,21 @@ if page == "🏠 Inference":
                     value=f"{int(vote_counts[final_prediction])}/5"
                 )
         
-        # Comparison Chart - Show individual model predictions
+        # Individual Model Predictions
         st.markdown("---")
-        st.subheader("Individual Model Predictions (for reference)")
+        st.subheader("Individual Model Predictions")
+        cols = st.columns(3)
+        for i, res in enumerate(results):
+            with cols[i % 3]:
+                st.metric(
+                    label=res["Model"],
+                    value=res["Prediction"],
+                    delta=f"{res['Confidence']:.1%}"
+                )
+        
+        # Comparison Chart
+        st.markdown("---")
+        st.subheader("Confidence Comparison")
         res_df = pd.DataFrame(results)
         fig = px.bar(res_df, x='Model', y='Confidence', color='Prediction', 
                      text_auto='.1%', title="Model Confidence Scores", range_y=[0,1])
