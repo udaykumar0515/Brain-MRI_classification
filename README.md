@@ -12,7 +12,11 @@ This project implements and compares 5 different deep learning models for brain 
 
 The system achieves exceptional accuracy (up to 99.77%) using ensemble voting and provides a user-friendly interface for medical professionals and researchers.
 
-## 🏆 Model Performance
+## � Live Demo
+
+**Try the interactive dashboard:** [https://brain-tumor-mriclassification.streamlit.app/](https://brain-tumor-mriclassification.streamlit.app/)
+
+## �🏆 Model Performance
 
 | Model | Accuracy | F1 Score | Parameters (M) | Inference Time (ms) |
 |-------|----------|----------|----------------|-------------------|
@@ -105,13 +109,9 @@ streamlit run app.py
 Brain-MRI_classification/
 ├── app.py                 # Main Streamlit dashboard
 ├── requirements.txt       # Python dependencies
-├── models/               # Pre-trained model checkpoints
 ├── metrics/              # Training history CSV files
 ├── test_results/        # Evaluation results and benchmarks
 ├── training_scripts/     # Jupyter notebooks for model training
-├── dataset/              # MRI image dataset
-├── docs/                 # Documentation
-└── images_sem_6/         # Additional images/resources
 ```
 
 ## 🔬 Model Architecture Details
@@ -225,22 +225,8 @@ CLASS_NAMES = ['Glioma', 'Meningioma', 'No Tumor', 'Pituitary']
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🙏 Acknowledgments
-
-- Medical imaging community for dataset contributions
-- PyTorch and timm teams for excellent frameworks
-- Streamlit team for the amazing dashboard framework
-- Medical professionals for domain expertise
-
-## 📞 Contact
-
-**Uday Kumar**
-- GitHub: [@udaykumar0515](https://github.com/udaykumar0515)
-- Project: [Brain-MRI_classification](https://github.com/udaykumar0515/Brain-MRI_classification)
-
 ---
 
 ⚡ **Note**: This project is for educational and research purposes. For clinical use, please ensure proper validation and regulatory compliance.
 
-🧠 **Made with ❤️ for advancing medical AI**
+🧠 **Made for advancing medical AI**
